@@ -1,0 +1,7 @@
+.vscode/
+node_modules/
+src/
+templates/
+.prettierignore
+.prettierrc.json
+tsconfig.json
