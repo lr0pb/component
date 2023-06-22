@@ -1,10 +1,9 @@
-import { options } from './commands/index.js';
-import zod from 'zod';
+import type { Options } from './options.js';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import open from 'open';
+import { getBooleanOptions } from './getBooleanOptions.js';
 
-type Options = Partial<zod.infer<typeof options>>;
 type Replacer = (fileContent: string) => string;
 
 export async function createComponent(
@@ -13,26 +12,36 @@ export async function createComponent(
   name: string,
   options: Options,
 ) {
+  const splittedName = name.split('');
+  splittedName[0] = splittedName[0]?.toLowerCase()!;
+  const smallName = splittedName.join('');
   await fs.mkdir(dir, {
     recursive: true,
   });
-  const j = (templatePath: string) => {
-    return path.join(commandDir, 'templates', templatePath);
-  };
-  const r: Replacer = (fileContent) => {
-    return fileContent.replaceAll('name', name);
-  };
-  await copyFolder(j('common'), dir, r);
-  if (options.fixture) {
-    await copyFolder(j('fixture'), dir, r);
-  }
-  if (options.css) {
-    await copyFolder(j('styles'), dir, (fileContent) => {
-      return r(fileContent).replaceAll('smallName', name.toLowerCase());
-    });
-  }
-  if (options.decorator) {
-    await copyFolder(j('decorator'), dir, r);
+  const booleanOptions = getBooleanOptions(options, true);
+  delete booleanOptions['exactPath'];
+  const sequense = ['common', ...Object.keys(booleanOptions), 'styles-types'];
+  booleanOptions['common'] = true;
+  for (const key of sequense) {
+    if (key.includes('-')) {
+      const keys = key.split('-');
+      let allTrue = true;
+      for (const oneKey of keys) {
+        if (!booleanOptions[oneKey]) allTrue = false;
+      }
+      if (!allTrue) continue;
+    } else if (!booleanOptions[key]) {
+      continue;
+    }
+    await copyFolder(
+      path.join(commandDir, 'templates', key),
+      dir,
+      (fileContent) => {
+        return fileContent
+          .replaceAll('name', name)
+          .replaceAll('smallName', smallName);
+      },
+    );
   }
   const file = path.join(dir, name + '.tsx');
   await open(file);

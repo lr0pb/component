@@ -1,88 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Text, useApp } from 'ink';
+import React, { useState, useMemo } from 'react';
+import { Box, Text } from 'ink';
 import { MultiSelect } from '@inkjs/ui';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-import fs from 'node:fs/promises';
+import type { Options, Key } from './options.js';
+import { getOptionPacks } from './getOptionPacks.js';
 
-const options = [
-  {
-    label: 'Add styles',
-    value: 'css',
-  },
-  {
-    label: 'Add fixture',
-    value: 'fixture',
-  },
-  {
-    label: 'Add decorator',
-    value: 'decorator',
-  },
-  {
-    label: 'Save as exact path',
-    value: 'exactPath',
-  },
-];
+type GetOptions = (options: Options) => void;
 
-export const args = null;
-
-export default function Settings() {
-  const [value, setValue] = useState<string[]>([]);
-  const commandDir = path.join(
-    path.dirname(fileURLToPath(import.meta.url)),
-    '../',
-  );
-  const file = path.join(commandDir, 'settings.json');
-  useEffect(() => {
-    fs.readFile(file, 'utf8')
-      .then((text) => {
-        setValue(JSON.parse(text));
-      })
-      .catch(async () => {
-        const actualValue = ['fixture'];
-        setValue(actualValue);
-        await fs.writeFile(file, JSON.stringify(actualValue));
-      });
-  }, []);
-  return (
-    <Box
-      flexDirection='column'
-      gap={1}
-    >
-      <Box flexDirection='column'>
-        <Text>⚡ Select your default settings for creating new components</Text>
-        <Text>
-          Press <Text italic>Space</Text> to toggle options,{' '}
-          <Text italic>Enter</Text> to save
-        </Text>
-      </Box>
-      {value.length > 0 && (
-        <SettingsSelect
-          value={value}
-          file={file}
-        />
-      )}
-    </Box>
-  );
-}
-
-type SettingsSelectProps = {
-  value: string[];
-  file: string;
+type Props = {
+  options: Options;
+  onChange: GetOptions;
+  onDone: GetOptions;
 };
 
-function SettingsSelect({ value, file }: SettingsSelectProps) {
-  const { exit } = useApp();
+export function Settings({ options, onChange, onDone }: Props) {
+  const { booleanOptions, selectOptions, defaultOptions } = useMemo(
+    () => getOptionPacks(options),
+    [],
+  );
+  const [submited, setSubmited] = useState(false);
+  const convertOptions = (values: Key[]): Options => {
+    const responseOptions: any = { ...options, ...booleanOptions };
+    values.forEach((value) => {
+      responseOptions[value] = true;
+    });
+    return responseOptions;
+  };
   return (
-    <MultiSelect
-      options={options}
-      defaultValue={value}
-      onChange={async (newValue) => {
-        await fs.writeFile(file, JSON.stringify(newValue));
-      }}
-      onSubmit={() => {
-        exit();
-      }}
-    />
+    <>
+      <Text>
+        ⌨️{'  '}Press <Text italic>Space</Text> to toggle options,{' '}
+        <Text italic>Enter</Text> to create component
+      </Text>
+      <Box marginY={1}>
+        <MultiSelect
+          options={selectOptions}
+          defaultValue={defaultOptions}
+          onChange={(values) => {
+            onChange(convertOptions(values as Key[]));
+          }}
+          onSubmit={(values) => {
+            if (submited) return;
+            setSubmited(true);
+            onDone(convertOptions(values as Key[]));
+          }}
+        />
+      </Box>
+    </>
   );
 }

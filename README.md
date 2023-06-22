@@ -10,41 +10,55 @@ npm i -D @lr0pb/component
 
 ### Using
 
-```sh
-npx c Button
+It will create component in current working directory:
+
+```
+$ npx c ui/Button
+            |
+            v
+src/ui/components/Button
 ```
 
-It will create in your working directory folder `src/components/Button` for component.
+So it uses next pattern:
 
-Actually, you can create components like this:
-
-```sh
-npx c shared/ui/Button
+```
+$ npx c [folders]/[name]
+            |
+            v
+[sourceDir]/[folders]/components/[name]
 ```
 
-In this case, `src/shared/ui/components/Button` will be created. You can also remove creating nested `components` folder with `--exact-path` (`-e`) flag or set custom base folder via `--source-dir` flag. Component have file structure like this:
+You could switch source dir by `--source-dir [dir]` flag and you could remove adding nested `components/` folder by `--exact-path` (`-e`) flag
+
+### Component file structure
+
+Using this flags to tweak what files your next component will have:
+
+```
+  -s, --styles          Style files (default: false)
+  -d, --decorator       Cosmos decorator (default: false)
+  --no-fixture          Fixtures file
+  --no-types            Separated types file
+  -e, --exact-path      Create exact folder (default: false)
+```
+
+Dont worry, all this flags you can change also in UI:
+
+![CLI screenshot](docs/screenshot.png)
+
+Component have next file structure:
 
 ```
 Button
-  |- Button.tsx
-  |- Button.fixture.tsx
-  |- Button.types.ts
-  |- index.ts
-```
-
-You can also use flags `--css` (`-c`) and `--decorator` (`-d`) to get complete component folder:
-
-```diff
-Button
-  |- Button.tsx
-  |- Button.fixture.tsx
-+ |- Button.module.scss
-+ |- Button.module.scss.d.ts
-  |- Button.types.ts
-+ |- cosmos.decorator.tsx
-  |- index.ts
+  |- Button.tsx                   base file
+  |- Button.fixture.tsx           --no-fixture to opt out
+  |- Button.module.scss           --styles
+  |- Button.module.scss.d.ts      --styles
+  |- Button.types.ts              --no-types to opt out
+  |- cosmos.decorator.tsx         --decorator
+  |- index.ts                     base file
 ```
 
 Types declaration file for styles is the same you get from [Typed CSS Modules](https://www.npmjs.com/package/typed-css-modules) with `--namedExports` flag
 
-CLI was created using [Pastel](https://github.com/vadimdemedes/pastel#readme), [Ink](https://github.com/vadimdemedes/ink#readme) and [Ink UI](https://github.com/vadimdemedes/ink-ui#readme)
+CLI was created using [Pastel](https://github.com/vadimdemedes/pastel#readme), [Ink](https://github.com/vadimdemedes/ink#readme), [Ink UI](https://github.com/vadimdemedes/ink-ui#readme) and [Zod](https://github.com/colinhacks/zod#introduction)

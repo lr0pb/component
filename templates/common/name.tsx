@@ -1,11 +1,7 @@
-import { nameProps } from './name.types';
-
-export function name({
-  children,
-}: nameProps) {
+export function name() {
   return (
     <div>
-      {children}
+      
     </div>
   );
 }
