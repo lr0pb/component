@@ -1,6 +1,9 @@
-![npx c banner](docs/banner.png)
-
-# ⚡ Bootstrap React component folder structure (Beta)
+<p align="center">
+  <img src="docs/banner.png" align="center" alt="npx c banner" />
+  <h1 align="center">
+    ⚡ Bootstrap React component folder structure
+  </h1>
+</p>
 
 CLI for bootstraping component folder structure for TypeScript React projects that use SCSS Modules for styling and [React Cosmos](https://github.com/react-cosmos/react-cosmos#readme) for visual testing
 
@@ -46,7 +49,9 @@ Using next flags you could tweak what files will have your next component:
 
 All them you can apply via multi select interface:
 
-![Screenshot of CLI usage](docs/screenshot.png)
+<p align="center">
+  <img src="docs/screenshot.png" align="center" alt="Visualization of the CLI usage" />
+</p>
 
 Use `-y` flag to create component immediatelly without operating with select interface
 
