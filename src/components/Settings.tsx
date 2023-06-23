@@ -1,22 +1,20 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Box, Text } from 'ink';
 import { MultiSelect } from '@inkjs/ui';
-import type { Options, Key } from './options.js';
-import { getOptionPacks } from './getOptionPacks.js';
+import type { Options, Key } from '../options.js';
+import type { Pack } from '../getOptionPacks.js';
 
 type GetOptions = (options: Options) => void;
 
 type Props = {
   options: Options;
+  pack: Pack;
   onChange: GetOptions;
   onDone: GetOptions;
 };
 
-export function Settings({ options, onChange, onDone }: Props) {
-  const { booleanOptions, selectOptions, defaultOptions } = useMemo(
-    () => getOptionPacks(options),
-    [],
-  );
+export function Settings({ options, pack, onChange, onDone }: Props) {
+  const { booleanOptions, selectOptions, defaultOptions } = pack;
   const [submited, setSubmited] = useState(false);
   const convertOptions = (values: Key[]): Options => {
     const responseOptions: any = { ...options, ...booleanOptions };

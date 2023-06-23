@@ -20,6 +20,7 @@ export async function createComponent(
   });
   const booleanOptions = getBooleanOptions(options, true);
   delete booleanOptions['exactPath'];
+  delete booleanOptions['yes'];
   const sequense = ['common', ...Object.keys(booleanOptions), 'styles-types'];
   booleanOptions['common'] = true;
   for (const key of sequense) {

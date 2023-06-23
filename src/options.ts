@@ -26,6 +26,12 @@ export const options = zod.object({
     .string()
     .default('src')
     .describe('Source directory to put component folders in'),
+  yes: zod.boolean().describe(
+    option({
+      description: 'Create component immediatelly without using interface',
+      alias: 'y',
+    }),
+  ),
 });
 
 export type Options = zod.infer<typeof options>;

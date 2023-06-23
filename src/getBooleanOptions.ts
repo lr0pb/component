@@ -31,6 +31,7 @@ function isBooleanType(key: Key) {
 export function getBooleanOptions(options: Options, preserveValues?: boolean) {
   const booleanOptions: Record<string, boolean> = {};
   Object.keys(options).forEach((key) => {
+    if (key === 'yes') return;
     if (!isBooleanType(key as Key)) return;
     booleanOptions[key] = preserveValues
       ? (options[key as Key] as boolean)

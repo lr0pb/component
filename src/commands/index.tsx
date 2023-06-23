@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { argument } from 'pastel';
 import { Box, Text, useApp } from 'ink';
 import { Spinner, StatusMessage } from '@inkjs/ui';
@@ -10,7 +10,10 @@ import fs from 'node:fs/promises';
 import { createComponent } from '../createComponent.js';
 export { options } from '../options.js';
 import type { Options } from '../options.js';
-import { Settings } from '../settings.js';
+import { Settings } from '../components/Settings.js';
+import { OptionsList } from '../components/OptionsList.js';
+import { type State, ResultStatus } from '../components/ResultStatus.js';
+import { getOptionPacks } from '../getOptionPacks.js';
 
 export const args = zod.tuple([
   zod.string().describe(
@@ -26,11 +29,9 @@ type Props = {
   options: Options;
 };
 
-type States = 'loading' | 'exists' | 'ready' | 'creating' | 'success' | 'error';
-
 export default function Index({ args, options }: Props) {
   const { exit } = useApp();
-  const [status, setStatus] = useState<States>('loading');
+  const [status, setStatus] = useState<State>('loading');
   const [error, setError] = useState('');
   const name = args[0].match(/(?<=\/)\w+$/)?.[0] as string;
   const commandDir = path.join(
@@ -46,6 +47,7 @@ export default function Index({ args, options }: Props) {
       name,
     );
   };
+  const pack = useMemo(() => getOptionPacks(options), []);
   const [dir, setDir] = useState(resolveDir(options));
   useEffect(() => {
     fs.stat(dir)
@@ -53,7 +55,7 @@ export default function Index({ args, options }: Props) {
         setStatus('exists');
       })
       .catch(() => {
-        setStatus('ready');
+        options.yes ? onDone(options) : setStatus('ready');
       });
   }, [dir]);
   const onDone = (actualOptions: Options) => {
@@ -84,27 +86,22 @@ export default function Index({ args, options }: Props) {
             Component with this name already exists
           </StatusMessage>
         </Box>
+      ) : options.yes ? (
+        <OptionsList pack={pack} />
       ) : (
         <Settings
           options={options}
+          pack={pack}
           onChange={(actualOptions) => {
             setDir(resolveDir(actualOptions));
           }}
           onDone={onDone}
         />
       )}
-      {status === 'creating' ? (
-        <Spinner label='Creating component...' />
-      ) : status === 'success' ? (
-        <StatusMessage variant='success'>
-          Component was created! Opening...
-        </StatusMessage>
-      ) : status === 'error' ? (
-        <Box flexDirection='column'>
-          <Text color='red'>😶 Something went wrong!</Text>
-          <Text>{error}</Text>
-        </Box>
-      ) : null}
+      <ResultStatus
+        status={status}
+        error={error}
+      />
     </Box>
   );
 }

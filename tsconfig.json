@@ -4,7 +4,8 @@
     "moduleResolution": "node16",
     "module": "Node16",
     "outDir": "dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "declaration": false
   },
   "include": ["src"],
   "exclude": ["templates"]
