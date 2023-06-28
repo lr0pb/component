@@ -1,4 +1,4 @@
-import { ReactDecorator } from 'react-cosmos-core';
+import type { ReactDecorator } from 'react-cosmos-core';
 
 const decorator: ReactDecorator = ({ children }) => {
   return (

@@ -1,4 +1,5 @@
 <p align="center">
+  <br/>
   <img src="docs/banner.png" align="center" alt="npx c banner" />
   <h1 align="center">
     ⚡ Bootstrap React component folder structure
