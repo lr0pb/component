@@ -1,10 +1,9 @@
 <p align="center">
-  <br/>
-  <img src="docs/banner.png" align="center" alt="npx c banner" />
-  <h1 align="center">
-    ⚡ Bootstrap React component folder structure
-  </h1>
+  <img src="https://raw.githubusercontent.com/lr0pb/component/main/docs/banner.png" alt="npx c banner" />
 </p>
+<h1 align="center">
+  ⚡ Bootstrap React component folder structure
+</h1>
 
 CLI for bootstraping component folder structure for TypeScript React projects that use SCSS Modules for styling and [React Cosmos](https://github.com/react-cosmos/react-cosmos#readme) for visual testing
 
@@ -51,7 +50,7 @@ Using next flags you could tweak what files will have your next component:
 All them you can apply via multi select interface:
 
 <p align="center">
-  <img src="docs/screenshot.png" align="center" alt="Visualization of the CLI usage" />
+  <img src="https://raw.githubusercontent.com/lr0pb/component/main/docs/screenshot.png" alt="Visualization of the CLI usage" />
 </p>
 
 Use `-y` flag to create component immediatelly without operating with select interface
