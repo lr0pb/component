@@ -1,5 +1,5 @@
 import * as styles from './name.module.scss';
-import { nameProps } from './name.types';
+import type { nameProps } from './name.types';
 
 export function name({
   children,
