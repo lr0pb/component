@@ -2,10 +2,18 @@ import { option } from 'pastel';
 import zod from 'zod';
 
 export const options = zod.object({
+  types: zod.boolean().default(true).describe('Separated types file'),
   styles: zod.boolean().describe(
     option({
       description: 'Style files',
       alias: 's',
+    }),
+  ),
+  fixture: zod.boolean().default(true).describe('Fixtures object file'),
+  singleFixture: zod.boolean().describe(
+    option({
+      description: 'Single fixture file',
+      alias: 'f',
     }),
   ),
   decorator: zod.boolean().describe(
@@ -14,8 +22,6 @@ export const options = zod.object({
       alias: 'd',
     }),
   ),
-  fixture: zod.boolean().default(true).describe('Fixtures file'),
-  types: zod.boolean().default(true).describe('Separated types file'),
   exactPath: zod.boolean().describe(
     option({
       description: 'Create exact folder',

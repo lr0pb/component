@@ -1,11 +1,12 @@
 import type { nameProps } from './name.types';
+import { Component } from '@/shared/components/Component';
 
 export function name({
   children,
 }: nameProps) {
   return (
-    <div>
+    <Component size='contain'>
       {children}
-    </div>
+    </Component>
   );
 }

@@ -40,11 +40,12 @@ You could switch source directory by `--source-dir [dir]` flag and you could rem
 Using next flags you could tweak what files will have your next component:
 
 ```
-  -s, --styles        Style files (default: false)
-  -d, --decorator     Cosmos decorator (default: false)
-  --no-fixture        Fixtures file
-  --no-types          Separated types file
-  -e, --exact-path    Create exact folder (default: false)
+  --no-types              Separated types file
+  -s, --styles            Style files (default: false)
+  --no-fixture            Fixtures object file
+  -f, --single-fixture    Single fixture file (default: false)
+  -d, --decorator         Cosmos decorator (default: false)
+  -e, --exact-path        Create exact folder (default: false)
 ```
 
 All them you can apply via multi select interface:

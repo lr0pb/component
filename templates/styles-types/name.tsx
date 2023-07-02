@@ -1,12 +1,16 @@
 import * as styles from './name.module.scss';
 import type { nameProps } from './name.types';
+import { Component } from '@/shared/components/Component';
 
 export function name({
   children,
 }: nameProps) {
   return (
-    <div className={styles.smallName}>
+    <Component
+      size='contain'
+      className={styles.smallName}
+    >
       {children}
-    </div>
+    </Component>
   );
 }

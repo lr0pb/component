@@ -4,7 +4,7 @@ import Pastel from 'pastel';
 const app = new Pastel({
   importMeta: import.meta,
   name: 'c',
-  version: '0.4.0',
+  version: '0.4.1',
 });
 
 await app.run();

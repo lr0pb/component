@@ -1,9 +1,17 @@
 import * as styles from './name.module.scss';
+import { Component } from '@/shared/components/Component';
 
-export function name() {
+type Props = {
+  children?: React.ReactNode;
+};
+
+export function name({ children }: Props) {
   return (
-    <div className={styles.smallName}>
-      
-    </div>
+    <Component
+      size='contain'
+      className={styles.smallName}
+    >
+      {children}
+    </Component>
   );
 }
